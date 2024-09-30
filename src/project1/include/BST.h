@@ -17,7 +17,8 @@
 struct Operation {
     int optype;  // 0: insert, 1: delete
     int key;
-    Operation(int _optype = 0, int _key = 0) : optype(_optype), key(_key) {}
+    int value;
+    Operation(int _optype = 0, int _key = 0, int _value = 0) : optype(_optype), key(_key), value(_value) {}
 };
 
 void TestBST(int n, Operation ops[]);

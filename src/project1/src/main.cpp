@@ -15,7 +15,10 @@ int main(int argc, char* argv[]) {
     Operation *ops = new Operation[n];
 
     for (int i = 0; i < n; i++) {
-        fscanf(fp, "%d %d", &ops[i].optype, &ops[i].key);
+        fscanf(fp, "%d%d", &ops[i].optype, &ops[i].key);
+        if (ops[i].optype == 0) {
+            fscanf(fp, "%d", &ops[i].value);
+        }
     }
 
     START_TIMER;
