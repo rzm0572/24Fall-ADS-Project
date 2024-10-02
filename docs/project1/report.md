@@ -7,9 +7,9 @@
 TODO
 
 ## Algorithm Specification
-#### AVL树部分报告
-##### AVL树插入和删除的实现
-###### 声明
+### AVL树部分报告
+#### AVL树插入和删除的实现
+##### 声明
 ```c++
 // avltree.h
 #ifndef AVLTREE_H
@@ -63,250 +63,37 @@ void printtree(Node* node);
 #endif
 ```
 使用`<类名称>.ins(<键值>);`插入键值，使用`<类名称>.del(<键值>);`删除键值，使用`<类名称>.Find(<键值>);`查找键值，返回节点指针，如果不存在返回NULL。
-###### 左旋的实现
-将右子树的左子树作为原来子树的根的右子树，将右子树作为新的根的右子树，将当前节点作为新的根，原先根作为左儿子，并更新父节点的子节点指针。
-```c++
-void AVL::twistL(Node* node){
-    Node* temp = node->right;
-    //confirm the right child of node is not null
-    if(temp!=NULL){
-        node->h_right = temp->h_left;
-        temp->h_left = max(node->h_left,node->h_right)+1;
-        //update balance factor of node and temp
-        if(node->pa){//node is not root
-            if(node->pa->left==node){//change the parent's child to temp
-                node->pa->left = temp;
-            }
-            else{
-                node->pa->right = temp;
-            }   
-        }   
-        else{
-            root = temp;
-        }     
-        temp->pa = node->pa;
-        node->pa = temp;//change the parent as the left child of temp
-        node->right = temp->left;//change the right child of node to the left child of temp
-        if(temp->left){
-            temp->left->pa=node;
-        }
-        
-        temp->left = node;
-        node->det = node->h_left - node->h_right;
-        temp->det = temp->h_left - temp->h_right;
-    } 
-}
-```
-###### 右旋的实现
-将左子树的右子树作为原来子树的根的左子树，将左子树作为新的根的左子树，将当前节点作为新的根，原先根作为右儿子，并更新父节点的子节点指针。
-```c++
-void AVL::twistR(Node* node){//Right rotation
-    Node* temp = node->left;//left child
-    //confirm the left child of node is not null
-    if(temp!=NULL){
-        node->h_left = temp->h_right;
-        temp->h_right=max(node->h_left,node->h_right)+1;
-        if(node->pa){
-            if(node->pa->left==node){
-                node->pa->left = temp;
-            }
-            else{
-                node->pa->right = temp;
-            }
-        }
-        else{
-            root = temp;
-        }
-        temp->pa = node->pa;
-        node->pa = temp;
-        node->left = temp->right;
-        if(temp->right){
-            temp->right->pa=node;
-        }
-        
-        temp->right = node;
-        node->det = node->h_left - node->h_right;
-        temp->det = temp->h_left - temp->h_right;
-    } 
-}
-```
-###### 平衡操作的实现
+##### 左旋的实现
+将右子树的左子树作为原来子树的根的右子树，将右子树作为新的根的右子树，将右儿子作为新的根，原先根作为新根的右儿子，并更新父节点的子节点指针。
+##### 右旋的实现
+将左儿子的右子树作为原来子树的根的左子树，将左子树作为新的根的左子树，将左儿子作为新的根，原先根作为新根的右儿子，并更新父节点的子节点指针。
+
+##### 平衡操作的实现
 平衡操作是指当某节点的高度或平衡因子发生变化时，需要对其父节点及祖先节点进行调整，以保持树的平衡性。
 若因为右儿子的右儿子过高导致的不平衡，则左旋。若因为左儿子的左儿子过高导致的不平衡，则右旋后左旋。若因为左儿子的右儿子过高导致的不平衡，则右旋。若因为右儿子的左儿子过高导致的不平衡，则左旋后右旋。
-```c++
-void AVL::balance(Node *temp){
-    while(temp){//update the height and balance factor of all nodes in the path from root to temp
-        // printf(" %d\n",temp->data);
-        Refresh(temp);//update the height and balance factor of temp
-        // temp->det = temp->h_left - temp->h_right;
-        if(temp->det==2){//if the left subtree is too high
-            if(temp->left->det>=0){//if the left subtree of the left subtree is too high
-                twistR(temp);
-            }
-            else{
-                twistL(temp->left);//if the left subtree of the left subtree is not too high, perform a left rotation on the left subtree of the left subtree
-                twistR(temp);
-            }
-        }
-        if(temp->det==-2){//if the right subtree is too high
-            if(temp->right->det<=0){//if the right subtree of the right subtree is too high
-                twistL(temp);
-            }
-            else{//if the right subtree of the right subtree is not too high, perform a right rotation on the right subtree of the right subtree, and then a left rotation on the node
-                twistR(temp->right);
-                twistL(temp);
-            }
-        }
-        temp = temp->pa;
-    }
-}
-```
-###### 插入节点的实现
+##### 插入节点的实现
 若插入的节点为根节点，则直接创建该节点为根节点；
 若插入的节点不为根节点，则从根节点开始，若插入的节点的键值小于当前节点的键值，则移动到当前节点的左子树；若插入的节点的键值大于等于当前节点的键值，则移动到当前节点的右子树；
 当移动到叶子节点时，则创建该节点为叶子节点；
 当移动到非叶子节点时，则更新该节点的高度和平衡因子；
 当移动到某节点时，若该节点的平衡因子大于1或小于-1，则进行旋转操作，直到该节点的平衡因子恢复正常；
-```c++
-void AVL::ins(int x) {
-    Node* newNode = createNode(x);
-    Node* temp = root;
-    // printf(" %d\n",root==NULL);
-    if(root==NULL){//if the tree is empty, create a new node as the root
-        root = newNode;
-        // printf("!!!\n");
-        return;
-    }
-    while(1){
-        // printf(" %d\n",temp->data);
-        if(x<temp->data){//if the data is less than the current node's data
-            if(temp->left==NULL){//if the left child of the current node is NULL, create a new node as the left child of the current node
-                temp->left = newNode;
-                temp->h_left ++;
-                temp->det = temp->h_left - temp->h_right;
-                newNode->pa = temp;
-                break;
-            }
-            temp = temp->left;//if the left child of the current node is not NULL, move to the left child of the current node
-        }
-        else{//if the data is greater than or equal to the current node's data
-            if(temp->right==NULL){//if the right child of the current node is NULL, create a new node as the right child of the current node
-                temp->right = newNode;
-                temp->h_right ++;
-                temp->det = temp->h_left - temp->h_right;
-                newNode->pa = temp;
-                break;
-            }
-            temp = temp->right;//if the right child of the current node is not NULL, move to the right child of the current node
-        }
-    }
-    balance(temp);
-}
 
-```
-###### 查找节点的实现
-从根节点开始，若查找的节点的键值小于当前节点的键值，则移动到当前节点的左子树；若查找的节点的键值大于等于当前节点的键值，则移动到当前节点的右子树；
-若查找的节点的键值等于当前节点的键值，则返回当前节点；
-```c++
-Node * AVL::Find(int x){
-    Node* temp = root;
-    while(temp!=NULL){//search the node with the given data
-        if(temp->data==x){//if the data is found, return the node
-            return temp;
-        }
-        else if(x<temp->data){//if the data is less than the current node's data, move to the left child of the current node
-            temp = temp->left;
-        }
-        else{//if the data is greater than or equal to the current node's data, move to the right child of the current node
-            temp = temp->right;
-        }
-    }
-    return NULL;
-} 
-```
-###### 删除单节点
+##### 删除单节点
 查找节点后，若该节点为叶子节点或者只有右子树，则直接删除该节点；
 若该节点有左子树，则用左子树的最大节点替换该节点，并删除该节点；
 从该节点到根节点，若该节点的平衡因子大于1或小于-1，则进行旋转操作，直到该节点的平衡因子恢复正常；
-```c++
-void AVL::remove_Node(Node* temp){
-    if(temp->right==NULL){//if the node has no right child, replace the node with its left child
-        if(temp->pa){
-            if(temp->pa->left==temp){
-                temp->pa->left = temp->left;
-            }
-            else{
-                temp->pa->right = temp->left;
-            }
-            
-        }
-        else{
-            root=temp->left;
-        }
-        if(temp->left){
-            temp->left->pa = temp->pa;
-        }
-    }
-    else{
-        if(temp->pa){//if the node has no left child, replace the node with its successor (the smallest node in the right subtree of the node)
-            if(temp->pa->left==temp){
-                temp->pa->left = temp->right;
-            }
-            else{
-                temp->pa->right = temp->right;
-            }
-        }
-        else{
-            root=temp->right;
-        }
-        if(temp->right){
-            temp->right->pa = temp->pa;  
-        }
-                    
-    }
-    free(temp);
-}
-```
-###### 删除节点的实现
-```c++
-int AVL::del(int x){
-    Node* temp = Find(x);//find the node with the given data
-    if(temp==NULL){//if the node is not found, return 0
-        return 0;
-    }
-    if(temp->left==NULL){//if the node has no left child, replace the node with its right child
-        Node *pa=temp->pa;
-        remove_Node(temp);
-        if(pa){
-            balance(pa);
-        }          
-    }
-    else{//if the node has a left child, replace the node with its successor (the biggest node in the left subtree of the node)
-        Node* min_node = temp->left;
-        while(min_node->right!=NULL){
-            min_node = min_node->right;
-        }
-        temp->data = min_node->data;
-        Node *pa=min_node->pa;
-        remove_Node(min_node);
-        if(pa){
-            balance(pa);
-        }
-        
-    }
-    return 1;
-}
-```
 
 
 
-##### 正确性验证
-###### 思路
+## Testing Results
+
+### AVL树代码正确性验证
+#### 思路
 1. 首先，我们需要对AVL树的插入和删除操作进行正确性验证。
 2. 其次，我们要验证是否为一个平衡二叉树。
-###### 正确的插入和删除
+#### 正确的插入和删除
 我们建立一个列表用朴素方法插入删除，并用中序遍历遍历二叉树并与列表进行比较，如果相同则验证成功。
-###### 实现列表的插入和删除
+##### 实现列表的插入和删除
 ```c++
 void List::init(){
     tot=0;
@@ -342,7 +129,7 @@ int List::del(int y){//delete the first occurrence of y from the list
     }
 }
 ```
-###### 中序遍历
+#### 中序遍历
 ```c++
 int checkorder(Node* node,int List[],int *cnt) {
     if(node==NULL){
@@ -362,7 +149,7 @@ int checkorder(Node* node,int List[],int *cnt) {
     return res;
 }
 ```
-###### 验证平衡性
+#### 验证平衡性
 我们使用朴素方法深度优先遍历二叉树，并计算每个节点的高度和平衡因子，如果高度差大于1则验证失败。
 ```c++
 int checkdepth(Node* node,int *res) {
@@ -383,7 +170,7 @@ int checkdepth(Node* node,int *res) {
     return max(left_height,right_height)+1;
 }
 ```
-###### 随机数据生成与验证
+#### 随机数据生成与验证
 通过 `rand()` 函数生成随机数据插入，在 `List` 中选择数据，小概率选择 `List` 外数据进行删除，并验证是否正确。
 ```c++
 AVL myavl;// global AVL tree
@@ -450,9 +237,8 @@ int main() {
 
 ```
 陆续进行了 1000 轮测试，每一轮测试 10000 组插入删除数据，经过测试，AVL 树均保持平衡并正确的插入和删除数据。
+TODO
 
-
-## Testing Results
 
 TODO
 
