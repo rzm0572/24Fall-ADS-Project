@@ -3,41 +3,41 @@
 先在这个文档里写，到时候我再用 $\LaTeX$ 改写一下.
 
 ## Introduction
-<p>This project aims to implement and analyze the performance of three different Binary Search Trees (BSTs): the Unbalanced Binary Search Tree (Unbalanced BST), AVL Tree, and Splay Tree. To better understand how these structures perform under different input data and operation orders, we will run multiple tests, collect the data, and generate visualizations that highlight their performance differences.</p>
+<p>本项目通过实现三种不同的二叉搜索树（BST），即普通不平衡二叉搜索树（Unbalanced BST）、AVL树和Splay树，并对它们在不同插入与删除操作下的性能进行对比和分析。为了深入了解这些树结构在处理不同输入数据和操作顺序时的表现，我们将通过多次测试运行，收集数据并生成图表来展示它们的性能差异。</p>
 
 ### Objectives
 
-The main goals of the project are:<br>
+项目的主要目标如下:<br>
 
-**Data Structure Implementation**: Implement all necessary operations, including insert, delete, and search, for the three tree structures (Unbalanced BST, AVL Tree, and Splay Tree).<br>
+**实现数据结构**: 为三种树结构（Unbalanced BST、AVL树和Splay树）实现所有必要的操作函数，包括插入、删除和查找。<br>
 
-**Data Generation and Performance Testing**: Generate test data based on three different insertion and deletion scenarios:<br>
+**数据生成与性能测试**: 根据三种不同的插入和删除场景，生成测试数据<br>
 
-Case 1 (Same Order): Insert N integers in ascending order, then delete them in the same order.<br>
-Case 2 (Reverse Deletion): Insert N integers in ascending order, then delete them in reverse order.<br>
-Case 3 (Random Order): Insert and delete N integers in random order.<br>
-The input data will range from 1,000 to 10,000 integers, and for each scenario, corresponding data files will be generated to serve as input for performance analysis.<br>
+Case 1（相同顺序）：按升序插入N个整数，并按相同顺序删除。<br>
+Case 2（逆序删除）：按升序插入N个整数，并按降序删除。<br>
+Case 3（随机顺序）：按随机顺序插入和删除N个整数。<br>
+输入数据的规模将覆盖从1000到10000个整数，并为每种场景生成对应的数据文件，用于测试框架执行性能分析。<br>
 
-**Performance Testing and Data Collection**: We will run a testing framework to perform multiple performance tests on the three tree structures, recording the runtime of insertion and deletion operations. Each test will be repeated several times to minimize any random errors, ensuring the stability and accuracy of the results.<br>
+**性能测试与数据收集**: 我们将运行测试框架，对三种数据结构执行多次性能测试，记录插入、删除操作的运行时间，并输出结果。测试将运行多次以消除偶然误差，并确保测试结果的稳定性和准确性。<br>
 
-**Data Visualization**: After testing, the collected data will be used to generate bar charts that display the maximum, average, and minimum runtime for each configuration across the three tree structures. This comparison will help visualize the performance differences under various operation scenarios.<br>
+**数据可视化**: 测试结束后，收集到的数据将被用于生成柱状图，展示不同配置下三种树结构的最大、平均和最小运行时间。通过图表对比，可以直观展示三种树结构在各种操作场景下的性能表现。<br>
 
-**Results Analysis**: By analyzing the runtime data and charts, we will compare the performance of the three data structures across different operations and input sizes, gaining insights into their strengths, weaknesses, and suitable use cases.<br>
+**结果分析**: 通过分析生成的运行时间数据和图表，比较三种数据结构在不同操作和数据规模下的性能差异，进一步了解它们的优缺点及适用场景。<br>
 
 ### Data Structures Overview
 
-**Unbalanced Binary Search Tree (BST)**: The Unbalanced BST does not maintain balance, so in the worst case, its insertion, deletion, and search operations degrade to O(N) complexity.<br>
-**AVL Tree**: The AVL tree maintains balance by ensuring that the height difference between the left and right subtrees of every node does not exceed 1, guaranteeing O(log N) time complexity.<br>
-**Splay Tree**: The Splay Tree is a self-adjusting tree that rotates frequently accessed nodes to the root, improving efficiency for repeatedly accessed nodes. It has an amortized time complexity of O(log N).<br>
+**Unbalanced Binary Search Tree (BST)**:普通BST不维护平衡，因此在最坏情况下其插入、删除和查找操作的时间复杂度会退化到O(N)。<br>
+**AVL Tree**: AVL树通过平衡左右子树的高度差不超过1来维持平衡，保证了O(log N)的时间复杂度。<br>
+**Splay Tree**: Splay树通过将频繁访问的节点旋转至树根，提高了对频繁访问节点的效率，具有O(log N)的摊销复杂度。<br>
 
 ### Methodology
-**Data Generation**: Python scripts will generate different types of data files that contain various insertion and deletion scenarios, used to test the performance of the trees under different input sizes.<br>
+**数据生成**: 通过Python脚本生成不同类型的数据文件，包含三种插入与删除操作的场景，用于测试不同输入规模下的树性能。<br>
 
-**Performance Testing**: The specified program will be run, using the generated data files as input. The execution time of the program will be recorded, collecting the maximum, minimum, and average runtime for each test.
+**性能测试**: 运行指定的程序并将不同的数据文件作为输入，测试程序的执行时间，并收集最大值、最小值和平均运行时间。
 
-**Visualization**: Bar charts will be created using Matplotlib to display the performance of each tree structure in different test scenarios. The charts will clearly show the maximum, average, and minimum runtime.
+**可视化**:使用Matplotlib生成柱状图，展示各类树结构在不同测试场景下的性能表现，图表将清晰显示出运行时间的最大值、平均值和最小值。
 
-**Result Analysis**: The performance of each tree structure will be analyzed based on the runtime data and charts, focusing on the differences in their performance under various input sizes, with maximum, average, and minimum times being compared.
+**结果分析**: 通过图表直观展示不同树结构在不同输入规模下的性能，并结合最大、平均和最小时间的对比，深入分析它们的表现差异。
 
 
 
