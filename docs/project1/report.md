@@ -3,6 +3,43 @@
 先在这个文档里写，到时候我再用 $\LaTeX$ 改写一下.
 
 ## Introduction
+<p>This project aims to implement and analyze the performance of three different Binary Search Trees (BSTs): the Unbalanced Binary Search Tree (Unbalanced BST), AVL Tree, and Splay Tree. To better understand how these structures perform under different input data and operation orders, we will run multiple tests, collect the data, and generate visualizations that highlight their performance differences.</p>
+
+### Objectives
+
+The main goals of the project are:<br>
+
+**Data Structure Implementation**: Implement all necessary operations, including insert, delete, and search, for the three tree structures (Unbalanced BST, AVL Tree, and Splay Tree).<br>
+
+**Data Generation and Performance Testing**: Generate test data based on three different insertion and deletion scenarios:<br>
+
+Case 1 (Same Order): Insert N integers in ascending order, then delete them in the same order.<br>
+Case 2 (Reverse Deletion): Insert N integers in ascending order, then delete them in reverse order.<br>
+Case 3 (Random Order): Insert and delete N integers in random order.<br>
+The input data will range from 1,000 to 10,000 integers, and for each scenario, corresponding data files will be generated to serve as input for performance analysis.<br>
+
+**Performance Testing and Data Collection**: We will run a testing framework to perform multiple performance tests on the three tree structures, recording the runtime of insertion and deletion operations. Each test will be repeated several times to minimize any random errors, ensuring the stability and accuracy of the results.<br>
+
+**Data Visualization**: After testing, the collected data will be used to generate bar charts that display the maximum, average, and minimum runtime for each configuration across the three tree structures. This comparison will help visualize the performance differences under various operation scenarios.<br>
+
+**Results Analysis**: By analyzing the runtime data and charts, we will compare the performance of the three data structures across different operations and input sizes, gaining insights into their strengths, weaknesses, and suitable use cases.<br>
+
+### Data Structures Overview
+
+**Unbalanced Binary Search Tree (BST)**: The Unbalanced BST does not maintain balance, so in the worst case, its insertion, deletion, and search operations degrade to O(N) complexity.<br>
+**AVL Tree**: The AVL tree maintains balance by ensuring that the height difference between the left and right subtrees of every node does not exceed 1, guaranteeing O(log N) time complexity.<br>
+**Splay Tree**: The Splay Tree is a self-adjusting tree that rotates frequently accessed nodes to the root, improving efficiency for repeatedly accessed nodes. It has an amortized time complexity of O(log N).<br>
+
+### Methodology
+**Data Generation**: Python scripts will generate different types of data files that contain various insertion and deletion scenarios, used to test the performance of the trees under different input sizes.<br>
+
+**Performance Testing**: The specified program will be run, using the generated data files as input. The execution time of the program will be recorded, collecting the maximum, minimum, and average runtime for each test.
+
+**Visualization**: Bar charts will be created using Matplotlib to display the performance of each tree structure in different test scenarios. The charts will clearly show the maximum, average, and minimum runtime.
+
+**Result Analysis**: The performance of each tree structure will be analyzed based on the runtime data and charts, focusing on the differences in their performance under various input sizes, with maximum, average, and minimum times being compared.
+
+
 
 TODO
 
