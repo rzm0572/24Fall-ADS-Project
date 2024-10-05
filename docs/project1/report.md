@@ -83,6 +83,242 @@ void printtree(Node* node);
 若该节点有左子树，则用左子树的最大节点替换该节点，并删除该节点；
 从该节点到根节点，若该节点的平衡因子大于1或小于-1，则进行旋转操作，直到该节点的平衡因子恢复正常；
 
+### BASELINE普通二叉搜索树部分报告
+#### 二叉树结构
+
+##### 节点
+```cpp
+struct Node {
+    int key;         // The key of the node, used for ordering nodes in the binary search tree
+    int value;       // The value stored in the node, can be any data associated with the key
+    Node* left;      // Pointer to the left child of this node, stores nodes with keys less than the current node's key
+    Node* right;     // Pointer to the right child of this node, stores nodes with keys greater than the current node's key
+    Node* parent;    // Pointer to the parent node, used to keep track of the parent for easier tree adjustments
+
+    // Constructor to initialize a Node
+    // _key: the key for ordering the node
+    // _value: the value associated with the key
+    // _left: pointer to the left child (default is nullptr)
+    // _right: pointer to the right child (default is nullptr)
+    // _parent: pointer to the parent node (default is nullptr)
+    Node(int _key = 0, int _value = 0, Node* _left = nullptr, Node* _right = nullptr, Node* _parent = nullptr)
+        : key(_key), value(_value), left(_left), right(_right), parent(_parent) {}
+};
+
+```
+##### 整棵树
+```cpp
+class BST {
+public:
+    Node* root;  // Pointer to the root of the tree
+    int size;    // Keeps track of the number of nodes in the tree
+
+    // Constructor for the Binary Search Tree (BST)
+    // Initializes an empty tree
+    BST() {
+        root = nullptr;  // The root is initially null (empty tree)
+        size = 0;        // Size starts at 0 since there are no nodes
+    }
+
+private:
+    // Helper function to replace a node with a new node in the parent link
+    // node: the current node to be replaced
+    // newNode: the new node that will take the place of 'node'
+    void replaceNodeInParent(Node* node, Node* newNode) {
+        // If node is the root, update the root to newNode
+        if (node->parent == nullptr) {
+            root = newNode;
+        } else {
+            // If node is a left child, update the left pointer in its parent
+            if (node == node->parent->left) {
+                node->parent->left = newNode;
+            } 
+            // Otherwise, update the right pointer in its parent
+            else {
+                node->parent->right = newNode;
+            }
+        }
+        // Update the parent pointer in the newNode
+        if (newNode != nullptr) {
+            newNode->parent = node->parent;
+        }
+    }
+
+    // Helper function to find the minimum node in a subtree
+    // This is typically used to find the in-order successor
+    Node* findMin(Node* node) {
+        // Traverse to the leftmost node, which is the minimum in a BST
+        while (node->left != nullptr) {
+            node = node->left;
+        }
+        return node;  // Return the minimum node
+    }
+
+    // Depth-first traversal of the tree to print its structure
+    // x: the current node being visited
+    void dfs(Node* x) {
+        if (x == nullptr) return;  // Base case: if node is null, return
+        
+        // Print the key and value of the current node
+        printf("%d: value = %d", x->key, x->value);
+
+        // Print the key of the left child if it exists
+        if (x->left != nullptr)
+            printf(", left = %d", x->left->key);
+
+        // Print the key of the right child if it exists
+        if (x->right != nullptr)
+            printf(", right = %d", x->right->key);
+
+        // Print the key of the parent if it exists
+        if (x->parent != nullptr)
+            printf(", parent = %d", x->parent->key);
+
+        printf("\n");  // Move to the next line
+
+        // Recursively visit the left and right children
+        dfs(x->left);
+        dfs(x->right);
+    }
+};
+
+```
+#### 主要实现方法
+1. 插入操作：<br>从根节点开始，通过比较节点值递归插入。
+2. 删除操作：<br>删除某个节点时，分为三种情况：叶子节点、只有一个子节点的节点、和有两个子节点的节点。
+3. 查找操作：<br>从根节点依次向左或向右递归查找目标节点。
+
+**代码实现**
+<br>插入操作
+<p>插入一个新节点的过程如下：<br>
+
+从根节点开始，沿着树往下找到适当的位置：<br>
+如果新节点的键值小于当前节点的键值，进入左子树。<br>
+如果新节点的键值大于当前节点的键值，进入右子树。<br>
+一旦找到合适的空位置，将新节点插入该位置，作为父节点的左子节点或右子节点。<br>
+更新树的大小。</p>
+```cpp
+bool insert(int key, int value) {
+    // If the tree is empty, create a new root node with the given key and value
+    if (size == 0) {
+        root = new Node(key, value);  // Set the root to the new node
+        size++;                       // Increment the size of the tree
+        return true;                  // Return true to indicate successful insertion
+    }
+
+    // Create a new node with the given key and value
+    Node* ins = new Node(key, value);
+    Node* x = root;        // Start the search from the root
+    Node* parent = nullptr; // To keep track of the parent of the current node
+
+    // Traverse the tree to find the correct position for the new node
+    while (x != nullptr) {
+        parent = x;  // Store the current node as the parent before moving
+        if (key < x->key)        // If the new key is less than the current node's key,
+            x = x->left;         // move to the left child
+        else if (key > x->key)   // If the new key is greater than the current node's key,
+            x = x->right;        // move to the right child
+        else {
+            // Duplicate keys are not allowed in the tree
+            delete ins;          // Delete the new node since it can't be inserted
+            return false;        // Return false to indicate insertion failure
+        }
+    }
+
+    // Once the correct position is found, link the new node to its parent
+    ins->parent = parent;         // Set the parent pointer of the new node
+
+    // Attach the new node as the left or right child based on the key comparison
+    if (key < parent->key) {
+        parent->left = ins;       // If the key is smaller, insert as the left child
+    } else {
+        parent->right = ins;      // If the key is larger, insert as the right child
+    }
+
+    size++;                       // Increment the size of the tree
+    return true;                  // Return true to indicate successful insertion
+}
+```
+<br> 删除操作
+<p>无子节点（叶子节点）：直接从树中移除该节点。<br>
+只有一个子节点：将该节点的子节点提升为该节点的位置，即用该节点的唯一子节点替换它。<br>
+有两个子节点：<br>
+找到该节点的中序后继节点（右子树中的最小节点）。<br>
+将后继节点的键值复制到要删除的节点。<br>
+删除后继节点（后继节点最多只有一个子节点，转化为第一种或第二种情况处理）。</p>
+
+```cpp
+bool remove(int key) {
+    // Search for the node with the given key
+    Node* node = searchNode(key);
+    
+    // If the node is not found, return false (node with the key doesn't exist)
+    if (node == nullptr)
+        return false;
+
+    // Case 1: Node has no children (a leaf node)
+    if (node->left == nullptr && node->right == nullptr) {
+        replaceNodeInParent(node, nullptr);  // Just remove the node
+    }
+    // Case 2: Node has one child (only right child exists)
+    else if (node->left == nullptr) {
+        replaceNodeInParent(node, node->right);  // Replace node with its right child
+    }
+    // Case 2: Node has one child (only left child exists)
+    else if (node->right == nullptr) {
+        replaceNodeInParent(node, node->left);   // Replace node with its left child
+    }
+    // Case 3: Node has two children
+    else {
+        // Find the in-order successor (smallest node in the right subtree)
+        Node* successor = findMin(node->right);
+        
+        // Replace the key and value of the node to be deleted with the successor's
+        node->key = successor->key;
+        node->value = successor->value;
+
+        // Remove the successor from its original position
+        replaceNodeInParent(successor, successor->right);
+    }
+
+    // Delete the original node and decrease the tree size
+    delete node;
+    size--;
+    
+    return true;  // Return true to indicate successful removal
+}
+
+```
+
+<br>查找操作
+<p>查找某个键值在树中的节点的过程如下：
+
+从根节点开始。
+比较要查找的键值与当前节点的键值：<br>
+如果要查找的键值比当前节点的键值小，则进入左子树。<br>
+如果要查找的键值比当前节点的键值大，则进入右子树。<br>
+如果找到相同的键值，则返回该节点。<br>
+如果遍历到叶子节点仍未找到匹配的键值，则返回nullptr，表示树中不存在该节点。</p>
+```cpp
+Node* searchNode(int key) {
+    Node* x = root;  // Start searching from the root of the tree
+
+    // Traverse the tree until the node is found or we reach a null pointer
+    while (x != nullptr) {
+        if (key < x->key)              // If the key is smaller than the current node's key,
+            x = x->left;               // move to the left child
+        else if (key > x->key)         // If the key is greater than the current node's key,
+            x = x->right;              // move to the right child
+        else                           // If the keys are equal,
+            return x;                  // return the current node (node found)
+    }
+    
+    // If the loop exits without finding the key, return nullptr (node not found)
+    return nullptr;
+}
+
+```
+
 
 
 ## Testing Results
@@ -241,6 +477,8 @@ TODO
 
 
 TODO
+
+
 
 ## Analysis
 
