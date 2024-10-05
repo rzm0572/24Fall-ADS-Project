@@ -12,9 +12,9 @@ import matplotlib.patches as patches
 now = datetime.datetime.now()
 timestamp = now.strftime("%Y%m%d_%H%M%S")
 # 定义程序和配置文件
-programs = ["./build/splay"]
+programs = ["./build/splay", "./build/AVL", "./build/baseline"]
 
-config_files = ["./data/data_random_10000.in"]
+config_files = ["./data/data_random_10000.in", "./data/data_same_10000.in", "./data/data_reverse_10000.in"]
 
 colors = ['royalblue', 'orangered', 'dodgerblue', 'blueviolet', 'maroon', 'crimson', 'teal', 'olive', 'cyan', 'brown', 'royalblue']
 num_runs = 30  # 运行次数 N
@@ -27,9 +27,8 @@ for config in config_files:
     for prog in programs:
         gflops_results = []
         for _ in range(num_runs):
-            env_vars = {'OMP_PLACES': 'sockets', 'OMP_PROC_BIND': 'close'}
             command = [prog, config]
-            result = subprocess.run(command, capture_output=True, text=True, env={**env_vars, **os.environ})
+            result = subprocess.run(command, capture_output=True, text=True)
             output = result.stdout.strip().split('\n')[-1]
             # gflop_value = re.findall(r"\(\s*([\d.]+)\s*GFlops\)", output)
             run_time = re.findall(r"[\d.]+", output)[0]
@@ -67,27 +66,27 @@ for i, prog in enumerate(programs):
         bx = bar.get_x()
         bwidth = bar.get_width()
 
-        ax.add_patch(patches.Rectangle((bx, bar.get_height()), bwidth, min_val / 20000, color='whitesmoke', fill=None, lw=1, linestyle='dashed'))
-        ax.add_patch(patches.Rectangle((bx, mbar.get_height()), bwidth, min_val / 20000, color='dimgrey', fill=None, lw=1, linestyle='dashed'))
+        ax.add_patch(patches.Rectangle((bx, bar.get_height()), bwidth, min_val / 200, color='whitesmoke', fill=None, lw=1, linestyle='dashed'))
+        ax.add_patch(patches.Rectangle((bx, mbar.get_height()), bwidth, min_val / 200, color='dimgrey', fill=None, lw=1, linestyle='dashed'))
 
-        ax.annotate(f'{mean_val:.5f}', xy=(rect.get_x() + rect.get_width() / 2, bar.get_height()),
+        ax.annotate(f'{mean_val:.6f}', xy=(rect.get_x() + rect.get_width() / 2, bar.get_height()),
                     xytext=(0, 3), textcoords="offset points", ha='center', va='bottom', color='white')
-        ax.annotate(f'{min_val:.5f}', xy=(rect.get_x() + rect.get_width() / 2, mbar.get_height()),
+        ax.annotate(f'{min_val:.6f}', xy=(rect.get_x() + rect.get_width() / 2, mbar.get_height()),
                     xytext=(0, 3), textcoords="offset points", ha='center', va='bottom', color='silver')
-        ax.annotate(f'{max_val:.5f}', xy=(rect.get_x() + rect.get_width() / 2,  rect.get_height()),
+        ax.annotate(f'{max_val:.6f}', xy=(rect.get_x() + rect.get_width() / 2,  rect.get_height()),
                     xytext=(0, 3), textcoords="offset points", ha='center', va='bottom')
 
 
 # 设置图表属性
-ax.set_xlabel('Configuration')
-ax.set_ylabel('GFlops')
-ax.set_title(f'Winograd Performance Runs: {num_runs} start: {timestamp} end: {datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}')
+ax.set_xlabel('Input File')
+ax.set_ylabel('Time / s')
+ax.set_title(f'BST Performance Runs: {num_runs} start: {timestamp} end: {datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}')
 ax.set_xticks(index + group_width / 2 - bar_width / 2)
 ax.set_xticklabels(config_files)
 ax.legend()
 
 # 调整布局并保存图像
 fig.tight_layout()
-plt.savefig(f'./build/autobench_{timestamp}.png', dpi=300)
+plt.savefig(f'./result/autobench_{timestamp}.png', dpi=300)
 
 print(results)

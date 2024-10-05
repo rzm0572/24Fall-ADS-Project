@@ -60,11 +60,11 @@ void Refresh(Node *node){
 struct AVL{
     Node* root;
 
-    void AVL::init(){
+    void init(){
         root = NULL;
     }
     //将自己的右儿子变成根，自己变成左儿子，左旋。
-    void AVL::twistL(Node* node){
+    void twistL(Node* node){
         Node* temp = node->right;
         //confirm whether the right child of node is not NULL
         if(temp!=NULL){
@@ -94,7 +94,7 @@ struct AVL{
         } 
     }
     //将自己的左儿子变成根，自己变成右儿子，右旋。
-    void AVL::twistR(Node* node){//Right rotation
+    void twistR(Node* node){//Right rotation
         Node* temp = node->left;//left child
         if(temp!=NULL){
             node->h_left = temp->h_right;
@@ -122,7 +122,7 @@ struct AVL{
             temp->det = temp->h_left - temp->h_right;
         } 
     }
-    void AVL::balance(Node *temp){
+    void balance(Node *temp){
         while(temp){//update the height and balance factor of all nodes in the path from root to temp
             // printf(" %d\n",temp->data);
             Refresh(temp);//update the height and balance factor of temp
@@ -148,7 +148,7 @@ struct AVL{
             temp = temp->pa;
         }
     }
-    void AVL::ins(int x) {
+    void ins(int x) {
         Node* newNode = createNode(x);
         Node* temp = root;
         // printf(" %d\n",root==NULL);
@@ -183,7 +183,7 @@ struct AVL{
         balance(temp);
     }
     //search the node with the given data and return the node if found, otherwise, return NULL
-    Node * AVL::Find(int x){
+    Node * Find(int x){
         Node* temp = root;
         while(temp!=NULL){//search the node with the given data
             if(temp->data==x){//if the data is found, return the node
@@ -198,7 +198,7 @@ struct AVL{
         }
         return NULL;
     } 
-    void AVL::remove_Node(Node* temp){
+    void remove_Node(Node* temp){
         if(temp->right==NULL){//if the node has no right child, replace the node with its left child
             if(temp->pa){
                 if(temp->pa->left==temp){
@@ -235,7 +235,7 @@ struct AVL{
         }
         free(temp);
     }
-    int AVL::del(int x){
+    int del(int x){
         Node* temp = Find(x);//find the node with the given data
         if(temp==NULL){//if the node is not found, return 0
             return 0;

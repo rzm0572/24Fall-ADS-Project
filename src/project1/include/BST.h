@@ -14,6 +14,7 @@
     printf("%.6fs " msg, t, ##__VA_ARGS__); \
 }
 
+// Operation struct
 struct Operation {
     int optype;  // 0: insert, 1: delete
     int key;
@@ -21,6 +22,7 @@ struct Operation {
     Operation(int _optype = 0, int _key = 0, int _value = 0) : optype(_optype), key(_key), value(_value) {}
 };
 
+// Use operations in ops to test BST
 void TestBST(int n, Operation ops[]);
 
 #endif
