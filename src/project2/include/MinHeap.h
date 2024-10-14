@@ -23,6 +23,9 @@
     printf("%.6fs " msg, t, ##__VA_ARGS__); \
 }
 
+#define real_tostr(x) #x
+#define tostr(x) real_tostr(x)
+
 #define real_cat(a, b) a##b
 #define cat(a, b) real_cat(a, b)
 

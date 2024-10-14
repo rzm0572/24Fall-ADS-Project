@@ -38,5 +38,8 @@ if __name__ == "__main__":
     for filename in raw:
         if filename.endswith(".gr"):
             num_vertice, num_edge = graphProcessor(os.path.join("./data/raw", filename), os.path.join("./data/processed", f"{filename.split(".")[1]}.gr"), we=True)
+            print(f"{filename} processed, num_vertice: {num_vertice}, num_edge: {num_edge}.")
+
             for i in range(3):
                 queryGenerator(os.path.join("./data/queries", f"{filename.split(".")[1]}_{i}.qry"), 1000, num_vertice)
+                print(f"{filename.split(".")[1]}_{i}.qry generated.")

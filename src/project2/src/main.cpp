@@ -42,11 +42,12 @@ public:
     dist_t dijkstra(int src, int dst) {
         // TODO: Implement Dijkstra's algorithm
         // You can use PriorityQueue<dist_pair> as the priority queue
-        
+        return 0;
     }
 };
 
 int main(int argc, char *argv[]) {
+    PriorityQueue<dist_pair> pq;
     std::string graphFileName = std::string("data/processed/") + std::string(argv[1]) + std::string(".gr");
     FILE *graphFile = fopen(graphFileName.c_str(), "r");
     
@@ -61,7 +62,7 @@ int main(int argc, char *argv[]) {
     }
     fclose(graphFile);
 
-    int numEpochs = std::stoi(argv[2]);
+    int numEpochs = argc > 2 ? std::stoi(argv[2]) : 3;
     double totalTime = 0.0;
     for (int epoch = 0; epoch < numEpochs; epoch++) {
         std::string queryFileName = std::string("data/queries/") + std::string(argv[1]) + std::string("_") + std::to_string(epoch) + std::string(".qry");
@@ -85,7 +86,7 @@ int main(int argc, char *argv[]) {
         }
         STOP_TIMER(totalTime);
 
-        std::string resultFileName = std::string("data/results/") + std::string(argv[1]) + std::string("_") + std::to_string(epoch) + std::string(".res");
+        std::string resultFileName = std::string("data/results/") + std::string(tostr(HEAPTYPE)) + std::string("_") + std::string(argv[1]) + std::string("_") + std::to_string(epoch) + std::string(".res");
         FILE *resultFile = fopen(resultFileName.c_str(), "w");
         for (int i = 0; i < Q; i++) {
             fprintf(resultFile, "%d\n", result[i]);
