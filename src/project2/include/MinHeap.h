@@ -109,12 +109,14 @@ public:
     int getSize();
     bool checkExist(int key);
 };
-
+/*
+左式堆
+*/
 template <class T>
 class LeftistHeap : public MinHeap<T> {
 protected:
-    int size;
-    struct TreeNode{
+    int size;// 堆的大小
+    struct TreeNode{// 节点结构
         Pair<T> value;
         TreeNode* left;
         TreeNode* right;
@@ -124,15 +126,15 @@ protected:
     }*root;
     TreeNode **Position;
 public:
-    LeftistHeap(int n);
-    TreeNode* Merge(TreeNode* T1, TreeNode* T2);
-    Pair<T> findMin();
-    bool insert(Pair<T> x);
-    bool deleteMin();
-    bool decreaseKey(Pair<T> x);
-    int getSize();
-    TreeNode* NewNode(Pair<T> x);
-    bool checkExist(int key);
+    LeftistHeap(int n);// 初始化
+    TreeNode* Merge(TreeNode* T1, TreeNode* T2);// 合并两个左式堆
+    Pair<T> findMin();// 找到最小值
+    bool insert(Pair<T> x);// 插入元素
+    bool deleteMin();// 删除最小值
+    bool decreaseKey(Pair<T> x);// 减小值
+    int getSize();// 获取大小
+    TreeNode* NewNode(Pair<T> x);// 创建新节点
+    bool checkExist(int key);// 检查是否存在
 };
 
 typedef int dist_t;              // Type of distance

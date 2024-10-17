@@ -137,6 +137,13 @@ int BinaryHeap<T>::getSize()
 {
     return size;
 }
+/*
+检查节点是否存在。
+参数：
+key：要检查的节点的键值
+返回值：若节点存在返回true，否则返回false。
+*/
+
 
 template <class T>
 bool BinaryHeap<T>::checkExist(int key) {
