@@ -4,7 +4,7 @@
 template class LeftistHeap<dist_pair>;
 
 template<class T>
-LeftistHeap<T>::LeftistHeap() {
+LeftistHeap<T>::LeftistHeap(int n) {
     printf("LeftistHeap created\n");
 }
 
@@ -28,6 +28,18 @@ bool LeftistHeap<T>::deleteMin() {
 
 template<class T>
 bool LeftistHeap<T>::decreaseKey(Pair<T> x) {
+    // TODO
+    return false;
+}
+
+template<class T>
+int LeftistHeap<T>::getSize() {
+    // TODO
+    return 0;
+}
+
+template<class T>
+bool LeftistHeap<T>::checkExist(int key) {
     // TODO
     return false;
 }

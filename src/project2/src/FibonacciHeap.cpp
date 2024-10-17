@@ -4,7 +4,7 @@
 template class FibonacciHeap<dist_pair>;
 
 template<class T>
-FibonacciHeap<T>::FibonacciHeap() {
+FibonacciHeap<T>::FibonacciHeap(int n) {
     printf("FibonacciHeap created\n");
 }
 
@@ -28,6 +28,18 @@ bool FibonacciHeap<T>::deleteMin() {
 
 template<class T>
 bool FibonacciHeap<T>::decreaseKey(Pair<T> x) {
+    // TODO
+    return false;
+}
+
+template<class T>
+int FibonacciHeap<T>::getSize() {
+    // TODO
+    return 0;
+}
+
+template<class T>
+bool FibonacciHeap<T>::checkExist(int key) {
     // TODO
     return false;
 }

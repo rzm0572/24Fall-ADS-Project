@@ -4,7 +4,7 @@
 template class BinomialHeap<dist_pair>;
 
 template<class T>
-BinomialHeap<T>::BinomialHeap() {
+BinomialHeap<T>::BinomialHeap(int n) {
     printf("BinomialHeap created\n");
 }
 
@@ -28,6 +28,18 @@ bool BinomialHeap<T>::deleteMin() {
 
 template<class T>
 bool BinomialHeap<T>::decreaseKey(Pair<T> x) {
+    // TODO
+    return false;
+}
+
+template<class T>
+int BinomialHeap<T>::getSize() {
+    // TODO
+    return 0;
+}
+
+template<class T>
+bool BinomialHeap<T>::checkExist(int key) {
     // TODO
     return false;
 }
