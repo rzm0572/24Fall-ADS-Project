@@ -24,6 +24,19 @@ public:
         size = 0;
     }
 
+    Node* searchNode(int key) {
+        Node* x = root;
+        while (x != nullptr) {
+            if (key < x->key)
+                x = x->left;
+            else if (key > x->key)
+                x = x->right;
+            else
+                return x;
+        }
+        return nullptr;
+    }
+
     bool insert(int key, int value) {
         if (size == 0) {
             root = new Node(key, value);
@@ -97,18 +110,6 @@ public:
     }
 
 private:
-    Node* searchNode(int key) {
-        Node* x = root;
-        while (x != nullptr) {
-            if (key < x->key)
-                x = x->left;
-            else if (key > x->key)
-                x = x->right;
-            else
-                return x;
-        }
-        return nullptr;
-    }
 
     void replaceNodeInParent(Node* node, Node* newNode) {
         if (node->parent == nullptr) {
