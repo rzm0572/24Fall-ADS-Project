@@ -41,13 +41,14 @@ public:
 
     dist_t dijkstra(int src, int dst) {
         // TODO: Implement Dijkstra's algorithm
-        // You can use PriorityQueue<dist_pair> as the priority queue
-        return 0;
+        // You can use PriorityQueue<dist_t> as the priority queue
+
+        PriorityQueue<dist_t> pq(V);
+        
     }
 };
 
 int main(int argc, char *argv[]) {
-    PriorityQueue<dist_pair> pq;
     std::string graphFileName = std::string("data/processed/") + std::string(argv[1]) + std::string(".gr");
     FILE *graphFile = fopen(graphFileName.c_str(), "r");
     

@@ -4,7 +4,7 @@
 template class FibonacciHeap<dist_pair>;
 
 template<class T>
-FibonacciHeap<T>::FibonacciHeap() {
+FibonacciHeap<T>::FibonacciHeap(int n) {
     printf("FibonacciHeap created\n");
 }
 

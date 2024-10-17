@@ -4,7 +4,7 @@
 template class LeftistHeap<dist_pair>;
 
 template<class T>
-LeftistHeap<T>::LeftistHeap() {
+LeftistHeap<T>::LeftistHeap(int n) {
     printf("LeftistHeap created\n");
 }
 

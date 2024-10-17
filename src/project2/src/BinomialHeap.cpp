@@ -4,7 +4,7 @@
 template class BinomialHeap<dist_pair>;
 
 template<class T>
-BinomialHeap<T>::BinomialHeap() {
+BinomialHeap<T>::BinomialHeap(int n) {
     printf("BinomialHeap created\n");
 }
 

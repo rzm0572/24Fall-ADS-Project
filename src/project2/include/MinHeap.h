@@ -33,8 +33,8 @@
 // ID-Distance pair struct
 template <class T>
 struct Pair {
-    int key;
-    T value;
+    int key;  // ID
+    T value;  // distance
 
     Pair() : key(-1) {};
     Pair(int _key, T _value) : key(_key), value(_value) {};
@@ -55,10 +55,14 @@ public:
     virtual bool insert(Pair<T> x) = 0;
     virtual bool deleteMin() = 0;
     virtual bool decreaseKey(Pair<T> x) = 0;
-    virtual int getSize() = 0;
+
     // Not necessary to implement in Dijkstra
     // vitrual bool deleteAny(int key);
     // virtual bool merge(MinHeap b);
+
+    // Helper function
+    virtual int getSize() = 0;
+    virtual bool checkExist(T key) = 0;
 };
 
 // Four implementations of MinHeap
@@ -68,29 +72,33 @@ public:
 template <class T>
 class BinomialHeap : public MinHeap<T> {
 public:
-    BinomialHeap();
+    BinomialHeap(int n);
     Pair<T> findMin();
     bool insert(Pair<T> x);
     bool deleteMin();
     bool decreaseKey(Pair<T> x);
+    int getSize();
+    bool checkExist(T key);
 };
 
 template <class T>
 class FibonacciHeap : public MinHeap<T> {
 public:
-    FibonacciHeap();
+    FibonacciHeap(int n);
     Pair<T> findMin();
     bool insert(Pair<T> x);
     bool deleteMin();
     bool decreaseKey(Pair<T> x);
+    int getSize();
+    bool checkExist(T key);
 };
 
 template <class T>
 class BinaryHeap : public MinHeap<T> {
 protected:
-    int size;
+    // int size;
     Pair<T> *Heap;
-    int * Position;
+    // int * Position;
 
 public:
     BinaryHeap(int n);
@@ -99,16 +107,19 @@ public:
     bool deleteMin();
     bool decreaseKey(Pair<T> x);
     int getSize();
+    bool checkExist(T key);
 };
 
 template <class T>
 class LeftistHeap : public MinHeap<T> {
 public:
-    LeftistHeap();
+    LeftistHeap(int n);
     Pair<T> findMin();
     bool insert(Pair<T> x);
     bool deleteMin();
     bool decreaseKey(Pair<T> x);
+    int getSize();
+    bool checkExist(T key);
 };
 
 typedef int dist_t;              // Type of distance

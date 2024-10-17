@@ -3,6 +3,7 @@
 ## File structure
 
 ```
+project2
 ├── CMakeLists.txt
 ├── data
 │   ├── processed
