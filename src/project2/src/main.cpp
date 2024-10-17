@@ -16,14 +16,16 @@ struct Edge {
     dist_t wgt;
     Edge(int _pnt = -1, Edge *_nxt = nullptr, dist_t _wgt = INF) : pnt(_pnt), nxt(_nxt), wgt(_wgt) {}
 };
-
+/*
+包含了使用迪杰斯特拉算法求解图中最短路径的类Graph
+*/
 class Graph {
 private:
-    int V, E;
-    Edge **head;
+    int V, E;// 顶点数和边数
+    Edge **head;// 链式前向星邻接表头指针
 
 public:
-    Graph(int _V=0, int _E=0){
+    Graph(int _V=0, int _E=0){// 初始化图，确定顶点数和边数
         V = _V;
         E = _E;
         head = new Edge*[V];
@@ -33,34 +35,39 @@ public:
     ~Graph() {
         delete[] head;
     }
-
+    /*
+        添加边
+    */
     void addEdge(int u, int v, dist_t w) {
         Edge *newEdge = new Edge(v, head[u], w);
         head[u] = newEdge;
     }
-
+    /*
+        迪杰斯特拉算法求解图中最短路径
+        返回从源点src到目的点dst的最短路径长度
+    */
     dist_t dijkstra(int src, int dst) {
         // TODO: Implement Dijkstra's algorithm
         // You can use PriorityQueue<dist_pair> as the priority queue
-        int *vis = (int *)malloc((V+10) * sizeof(int));
-        dist_t *dist = (dist_t *)malloc((V+10) * sizeof(dist_t));
-        std::fill(dist, dist + V + 10, INF);
-        std::fill(vis, vis + V + 10, 0);
-        PriorityQueue<long long>heap(V);
-        dist[src] = 0;
-        heap.insert(Pair<long long>(src,0));
-        while(heap.getSize()>0){
-            Pair<long long> x=heap.findMin();
-            heap.deleteMin();
-            if(vis[x.key]){
-                continue;
+        int *vis = (int *)malloc((V+10) * sizeof(int));// 记录是否访问过
+        dist_t *dist = (dist_t *)malloc((V+10) * sizeof(dist_t));// 记录最短路径长度
+        std::fill(dist, dist + V + 10, INF);// 初始化为无穷大
+        std::fill(vis, vis + V + 10, 0);// 初始化为未访问
+        PriorityQueue<long long>heap(V);// 优先队列
+        dist[src] = 0;// 起点到起点的距离为0
+        heap.insert(Pair<long long>(src,0));// 入队
+        while(heap.getSize()>0){// 队列非空即有元素可能更新最短路
+            Pair<long long> x=heap.findMin();// 取出队首元素
+            heap.deleteMin();// 删除队首元素
+            if(vis[x.key]){// 已经访问过
+                continue;// 跳过
             }
-            vis[x.key]=true;
-            for(Edge * i=head[x.key];i;i=i->nxt){
-                int v=i->pnt;
-                if(dist[v]>dist[x.key]+i->wgt){
+            vis[x.key]=true;// 标记为已访问
+            for(Edge * i=head[x.key];i;i=i->nxt){// 遍历x相连的节点
+                int v=i->pnt;// 相连节点
+                if(dist[v]>dist[x.key]+i->wgt){// 更新距离
                     dist[v]=dist[x.key]+i->wgt;
-                    if(!heap.insert(Pair<long long>(v,dist[v]))){
+                    if(!heap.insert(Pair<long long>(v,dist[v]))){//如果v在队列中，更新其距离，否则入队
                         heap.decreaseKey(Pair<long long>(v,dist[v]));
                     }
                     // heap.insert(Pair<long long>(v,dist[v]));
@@ -68,7 +75,7 @@ public:
 
             }
         }
-        return (vis[dst]) ? dist[dst] : INF;
+        return (vis[dst]) ? dist[dst] : INF;// 若目的点未访问，则返回无穷大，否则返回目的点到源点的最短路径长度
     }
 };
 
