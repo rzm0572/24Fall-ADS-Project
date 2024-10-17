@@ -55,7 +55,7 @@ public:
     virtual bool insert(Pair<T> x) = 0;
     virtual bool deleteMin() = 0;
     virtual bool decreaseKey(Pair<T> x) = 0;
-
+    virtual int getSize() = 0;
     // Not necessary to implement in Dijkstra
     // vitrual bool deleteAny(int key);
     // virtual bool merge(MinHeap b);
@@ -87,12 +87,18 @@ public:
 
 template <class T>
 class BinaryHeap : public MinHeap<T> {
+protected:
+    int size;
+    Pair<T> *Heap;
+    int * Position;
+
 public:
-    BinaryHeap();
+    BinaryHeap(int n);
     Pair<T> findMin();
     bool insert(Pair<T> x);
     bool deleteMin();
     bool decreaseKey(Pair<T> x);
+    int getSize();
 };
 
 template <class T>
