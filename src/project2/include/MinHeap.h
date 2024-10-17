@@ -112,13 +112,26 @@ public:
 
 template <class T>
 class LeftistHeap : public MinHeap<T> {
+protected:
+    int size;
+    struct TreeNode{
+        Pair<T> value;
+        TreeNode* left;
+        TreeNode* right;
+        TreeNode* parent;
+        int height;
+
+    }*root;
+    TreeNode **Position;
 public:
     LeftistHeap(int n);
+    TreeNode* Merge(TreeNode* T1, TreeNode* T2);
     Pair<T> findMin();
     bool insert(Pair<T> x);
     bool deleteMin();
     bool decreaseKey(Pair<T> x);
     int getSize();
+    TreeNode* NewNode(Pair<T> x);
     bool checkExist(int key);
 };
 

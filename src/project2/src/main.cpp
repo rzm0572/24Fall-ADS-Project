@@ -42,10 +42,33 @@ public:
     dist_t dijkstra(int src, int dst) {
         // TODO: Implement Dijkstra's algorithm
         // You can use PriorityQueue<dist_pair> as the priority queue
+        int *vis = (int *)malloc((V+10) * sizeof(int));
+        dist_t *dist = (dist_t *)malloc((V+10) * sizeof(dist_t));
+        std::fill(dist, dist + V + 10, INF);
+        std::fill(vis, vis + V + 10, 0);
+        PriorityQueue<long long>heap(V);
+        dist[src] = 0;
+        heap.insert(Pair<long long>(src,0));
+        while(heap.getSize()>0){
+            Pair<long long> x=heap.findMin();
+            heap.deleteMin();
+            if(vis[x.key]){
+                continue;
+            }
+            vis[x.key]=true;
+            for(Edge * i=head[x.key];i;i=i->nxt){
+                int v=i->pnt;
+                if(dist[v]>dist[x.key]+i->wgt){
+                    dist[v]=dist[x.key]+i->wgt;
+                    if(!heap.insert(Pair<long long>(v,dist[v]))){
+                        heap.decreaseKey(Pair<long long>(v,dist[v]));
+                    }
+                    // heap.insert(Pair<long long>(v,dist[v]));
+                }
 
-        PriorityQueue<dist_pair> pq(V);
-
-        return INF;
+            }
+        }
+        return (vis[dst]) ? dist[dst] : INF;
     }
 };
 
