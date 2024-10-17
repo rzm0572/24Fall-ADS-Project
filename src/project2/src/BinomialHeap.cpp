@@ -31,3 +31,15 @@ bool BinomialHeap<T>::decreaseKey(Pair<T> x) {
     // TODO
     return false;
 }
+
+template<class T>
+int BinomialHeap<T>::getSize() {
+    // TODO
+    return 0;
+}
+
+template<class T>
+bool BinomialHeap<T>::checkExist(int key) {
+    // TODO
+    return false;
+}

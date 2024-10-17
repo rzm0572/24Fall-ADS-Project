@@ -62,7 +62,7 @@ public:
 
     // Helper function
     virtual int getSize() = 0;
-    virtual bool checkExist(T key) = 0;
+    virtual bool checkExist(int key) = 0;
 };
 
 // Four implementations of MinHeap
@@ -78,7 +78,7 @@ public:
     bool deleteMin();
     bool decreaseKey(Pair<T> x);
     int getSize();
-    bool checkExist(T key);
+    bool checkExist(int key);
 };
 
 template <class T>
@@ -90,15 +90,15 @@ public:
     bool deleteMin();
     bool decreaseKey(Pair<T> x);
     int getSize();
-    bool checkExist(T key);
+    bool checkExist(int key);
 };
 
 template <class T>
 class BinaryHeap : public MinHeap<T> {
 protected:
-    // int size;
+    int size;
     Pair<T> *Heap;
-    // int * Position;
+    int * Position;
 
 public:
     BinaryHeap(int n);
@@ -107,7 +107,7 @@ public:
     bool deleteMin();
     bool decreaseKey(Pair<T> x);
     int getSize();
-    bool checkExist(T key);
+    bool checkExist(int key);
 };
 
 template <class T>
@@ -119,7 +119,7 @@ public:
     bool deleteMin();
     bool decreaseKey(Pair<T> x);
     int getSize();
-    bool checkExist(T key);
+    bool checkExist(int key);
 };
 
 typedef int dist_t;              // Type of distance

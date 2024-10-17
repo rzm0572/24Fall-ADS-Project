@@ -139,6 +139,6 @@ int BinaryHeap<T>::getSize()
 }
 
 template <class T>
-bool BinaryHeap<T>::checkExist(T key) {
-    return Position[x.key] != -1;
+bool BinaryHeap<T>::checkExist(int key) {
+    return Position[key] != -1;
 }

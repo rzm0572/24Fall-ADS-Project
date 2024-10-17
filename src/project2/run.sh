@@ -7,5 +7,5 @@ if [[ -n "$3" ]]; then
 fi
 
 cmake -B build
-cd build && make $1 && cd ..
+make $1 -C build
 ./build/$1 $2 ${TEST_CASE}

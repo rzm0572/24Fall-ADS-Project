@@ -41,10 +41,11 @@ public:
 
     dist_t dijkstra(int src, int dst) {
         // TODO: Implement Dijkstra's algorithm
-        // You can use PriorityQueue<dist_t> as the priority queue
+        // You can use PriorityQueue<dist_pair> as the priority queue
 
-        PriorityQueue<dist_t> pq(V);
-        
+        PriorityQueue<dist_pair> pq(V);
+
+        return INF;
     }
 };
 
