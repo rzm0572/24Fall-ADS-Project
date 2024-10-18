@@ -1,21 +1,21 @@
 #include "MinHeap.h"
 #include <cstdio>
 
-template class LeftistHeap<dist_pair>;
+template class LeftistHeap<dist_t>;
 
 /*
 初始化左式堆
 n: 堆的大小
-新建一个空的数组Position，大小为n+1，Position[i]表示指向键值为i的结点的指针，初始值为NULL
+新建一个空的数组Position，大小为n+1，Position[i]表示指向键值为i的结点的指针，初始值为nullptr
 */
 
 template<class T>
 LeftistHeap<T>::LeftistHeap(int n) {
     size = 0;
-    root = NULL;
-    Position = (TreeNode**)malloc((n+1) * sizeof(TreeNode*));
+    root = nullptr;
+    Position = new TreeNode*[n+1];
     for(int i=0;i<=n;i++){
-        Position[i] = NULL;
+        Position[i] = nullptr;
     }
     // printf("LeftistHeap created\n");
 }
@@ -29,10 +29,10 @@ LeftistHeap<T>::LeftistHeap(int n) {
 */
 template<class T>
 typename LeftistHeap<T>::TreeNode* LeftistHeap<T>::Merge(TreeNode* T1, TreeNode* T2) {
-    if (T1 == NULL) {// T1为空，返回T2
+    if (T1 == nullptr) {// T1为空，返回T2
         return T2;
     }
-    if(T2==NULL){// T2为空，返回T1
+    if(T2==nullptr){// T2为空，返回T1
         return T1;
     }
     if(T2->value<T1->value){// 确保T1的根值小于T2的根值
@@ -42,12 +42,12 @@ typename LeftistHeap<T>::TreeNode* LeftistHeap<T>::Merge(TreeNode* T1, TreeNode*
     }
     T1->right = Merge(T1->right, T2);// 合并T1的右子树和T2
     T1->right->parent = T1;// 更新T1的右子树的父节点为T1
-    if(T1->left==NULL || T1->left->height < T1->right->height){// 确保T1的左子树高度大于T1的右子树高度
+    if(T1->left==nullptr || T1->left->height < T1->right->height){// 确保T1的左子树高度大于T1的右子树高度
         TreeNode* temp = T1->left;//否则交换T1的左子树和右子树
         T1->left = T1->right;
         T1->right = temp;
     }
-    if(T1->right!=NULL){// 更新T1的高度
+    if(T1->right!=nullptr){// 更新T1的高度
         T1->height = T1->right->height + 1;//如果T1的右子树不为空，则T1的高度为T1的右子树高度加1
     }
     else{
@@ -97,7 +97,7 @@ bool LeftistHeap<T>::deleteMin() {
     if(size==0){// 如果堆为空，则返回false
         return false;
     }
-    Position[root->value.key] = NULL;// 将根节点的位置置空
+    Position[root->value.key] = nullptr;// 将根节点的位置置空
     size--;// 减少堆的大小
     root = Merge(root->left, root->right);// 合并根节点的左右子树，更新根节点的指针
     return true;
@@ -116,7 +116,7 @@ bool LeftistHeap<T>::decreaseKey(Pair<T> x) {
     }
     Position[x.key]->value=x;// 修改元素的值
     TreeNode* temp = Position[x.key];// 指向待修改元素的指针
-    while(temp->parent!=NULL && temp->value<temp->parent->value){// 向上交换元素，直到父节点的值小于子节点的值
+    while(temp->parent!=nullptr && temp->value<temp->parent->value){// 向上交换元素，直到父节点的值小于子节点的值
         Position[temp->parent->value.key] = temp;// 更新父节点的位置
         Position[temp->value.key] = temp->parent;// 更新子节点的位置
         
@@ -148,11 +148,12 @@ int LeftistHeap<T>::getSize() {
 */
 template<class T>
 typename LeftistHeap<T>::TreeNode* LeftistHeap<T>::NewNode(Pair<T> x){
-    TreeNode* temp = (TreeNode*)malloc(sizeof(TreeNode));// 申请一个新的结点
+    // TreeNode* temp = (TreeNode*)malloc(sizeof(TreeNode));// 申请一个新的结点
+    TreeNode *temp = new TreeNode();
     temp->value = x;
-    temp->left = NULL;
-    temp->right = NULL;
-    temp->parent = NULL;
+    temp->left = nullptr;
+    temp->right = nullptr;
+    temp->parent = nullptr;
     temp->height = 1;
     return temp;
 }
@@ -165,5 +166,5 @@ typename LeftistHeap<T>::TreeNode* LeftistHeap<T>::NewNode(Pair<T> x){
 */
 template <class T>
 bool LeftistHeap<T>::checkExist(int key) {
-    return Position[key] != NULL;
+    return Position[key] != nullptr;
 }

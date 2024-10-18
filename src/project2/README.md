@@ -27,9 +27,11 @@ project2
 
 ## Preparation
 
-1. Download the dataset from [Benchmarks for 9th DIMACS Implementation Challenge - Shortest Paths](http://www.dis.uniroma1.it/challenge9/download.shtml) and put them in `data/raw` directory.
+1. Run `./init.sh` to prepare the environment.
 
-2. Run `python3 utils/dataGen.py` to preprocess the data and generate the queries.
+2. Download the dataset from [Benchmarks for 9th DIMACS Implementation Challenge - Shortest Paths](http://www.dis.uniroma1.it/challenge9/download.shtml) and put them in `data/raw` directory.
+
+3. Run `python3 utils/dataGen.py` to preprocess the data and generate the queries.
 
 ## Build and Run
 

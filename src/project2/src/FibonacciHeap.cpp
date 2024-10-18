@@ -1,7 +1,7 @@
 #include "MinHeap.h"
 #include <cstdio>
 
-template class FibonacciHeap<dist_pair>;
+template class FibonacciHeap<dist_t>;
 
 template<class T>
 FibonacciHeap<T>::FibonacciHeap(int n) {

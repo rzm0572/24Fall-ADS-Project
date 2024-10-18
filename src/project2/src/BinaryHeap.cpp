@@ -2,7 +2,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-template class BinaryHeap<dist_pair>;
+template class BinaryHeap<dist_t>;
 /*
 初始化类
 参数：
@@ -17,8 +17,8 @@ template <class T>
 BinaryHeap<T>::BinaryHeap(int n)
 {
     size = 0;
-    Heap = (Pair<T> *)malloc((n + 1) * sizeof(Pair<T>)); // 分配空间用于储存堆
-    Position = (int *)malloc((n + 1) * sizeof(int));     // 分配空间用于储存每个节点都在堆中的位置
+    Heap = new Pair<T>[n + 1];  // 分配空间用于储存堆
+    Position = new int[n + 1];  // 分配空间用于储存每个节点都在堆中的位置
     for (int i = 0; i <= n; i++)
     {
         Position[i] = -1; // 初始化每个节点都不在堆中

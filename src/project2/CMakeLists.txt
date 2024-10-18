@@ -4,7 +4,7 @@ project(project2)
 set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_CXX_STANDARD 11)
 
-add_compile_options(-g -O0 -Wall)
+add_compile_options(-g -Ofast -Wall)
 include_directories(include)
 
 function(add_executable_with_deps target deps srcs)

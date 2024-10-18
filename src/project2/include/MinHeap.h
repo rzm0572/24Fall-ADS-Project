@@ -23,6 +23,12 @@
     printf("%.6fs " msg, t, ##__VA_ARGS__); \
 }
 
+#define logger(file, msg, ...) \
+{ \
+    printf(msg, ##__VA_ARGS__); \
+    fprintf(file, msg, ##__VA_ARGS__); \
+}
+
 #define real_tostr(x) #x
 #define tostr(x) real_tostr(x)
 
@@ -138,7 +144,7 @@ public:
 };
 
 typedef int dist_t;              // Type of distance
-typedef Pair<dist_t> dist_pair;  // Type of ID-distance pair
+typedef Pair<dist_t> distPair;  // Type of ID-distance pair
 
 template <typename T>
 using PriorityQueue = cat(HEAPTYPE, Heap)<T>;

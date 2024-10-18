@@ -1,7 +1,7 @@
 #include "MinHeap.h"
 #include <cstdio>
 
-template class BinomialHeap<dist_pair>;
+template class BinomialHeap<dist_t>;
 
 template<class T>
 BinomialHeap<T>::BinomialHeap(int n) {
