@@ -1,13 +1,13 @@
 #!/bin/bash
 
 cmake -B build
-mkdir data
+mkdir -p data
 
 cd data
-mkdir processed
-mkdir queries
-mkdir raw
-mkdir results
+mkdir -p processed
+mkdir -p queries
+mkdir -p raw
+mkdir -p results
 cd ..
 
-mkdir log
+mkdir -p log
