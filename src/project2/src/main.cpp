@@ -67,7 +67,6 @@ class Graph {
         while (heap.getSize() > 0) {                                 // 队列非空即有元素可能更新最短路
             distPair x = heap.findMin();                             // 取出队首元素
             heap.deleteMin();                                        // 删除队首元素
-
             if (vis[x.key]) {                                        // 已经访问过
                 continue;                                            // 跳过
             }
@@ -110,7 +109,7 @@ int main(int argc, char *argv[]) {
     fclose(graphFile);
     logger(stderr, "Graph loaded.\n");
 
-    int numEpochs = argc > 2 ? std::stoi(argv[2]) : 3;
+        int numEpochs = argc > 2 ? std::stoi(argv[2]) : 3;
     double totalTime = 0.0;
     for (int epoch = 0; epoch < numEpochs; epoch++) {
         std::string queryFileName = std::string("data/queries/") + std::string(argv[1]) + "_" + std::to_string(epoch) + ".qry";
