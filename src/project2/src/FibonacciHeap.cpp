@@ -13,7 +13,7 @@ template class FibonacciHeap<dist_t>;
 
 template <class T>
 void FibonacciHeap<T>::printHeap(int n) {
-    printf("Heap: rootLen = %d, size = %d, minNode = %d\n", rootLen, size, minNode == nullptr ? -1 : minNode->data.key);
+    printf("Heap: rootLen = %d, size = %d, minNode = %d\n", rootLen, MinHeap<T>::size, minNode == nullptr ? -1 : minNode->data.key);
     // dfs(minNode);
     for (int i = 0; i < n; i++) {
         TreeNode* x = Position[i];
@@ -101,7 +101,7 @@ typename FibonacciHeap<T>::TreeNode* FibonacciHeap<T>::heapLink(TreeNode* x, Tre
 
 template <class T>
 void FibonacciHeap<T>::consolidate() {
-    int mxDeg = maxDegree(size);
+    int mxDeg = maxDegree(MinHeap<T>::size);
     TreeNode** A = new TreeNode*[mxDeg];
     std::fill(A, A + mxDeg, nullptr);
 
@@ -171,8 +171,8 @@ void FibonacciHeap<T>::cascadingCut(TreeNode* x) {
 }
 
 template <class T>
-FibonacciHeap<T>::FibonacciHeap(int n) {
-    size = 0;
+FibonacciHeap<T>::FibonacciHeap(int n) : MinHeap<T>(0) {
+    // size = 0;
     rootLen = 0;
     minNode = nullptr;
     Position = new TreeNode*[n + 1];
@@ -185,7 +185,7 @@ FibonacciHeap<T>::~FibonacciHeap() {
 
 template <class T>
 Pair<T> FibonacciHeap<T>::findMin() {
-    return (size > 0) ? minNode->data : Pair<T>();
+    return (MinHeap<T>::size > 0) ? minNode->data : Pair<T>();
 }
 
 template <class T>
@@ -193,7 +193,7 @@ bool FibonacciHeap<T>::insert(Pair<T> x) {
     TreeNode* newNode = new TreeNode(x);
 
     insertRootList(newNode);
-    size++;
+    MinHeap<T>::size++;
     Position[x.key] = newNode;
 
     return true;
@@ -217,7 +217,7 @@ bool FibonacciHeap<T>::deleteMin() {
     deleteRootList(z);
     Position[z->data.key] = nullptr;
     delete z;
-    size--;
+    MinHeap<T>::size--;
 
     if (rootLen > 0) {
         consolidate();
@@ -244,11 +244,6 @@ bool FibonacciHeap<T>::decreaseKey(Pair<T> x) {
     }
 
     return true;
-}
-
-template <class T>
-int FibonacciHeap<T>::getSize() {
-    return size;
 }
 
 template <class T>

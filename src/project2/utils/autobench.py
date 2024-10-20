@@ -1,92 +1,46 @@
-import re
+import numpy as np
+import subprocess
 import os
+import re
 import time
 import datetime
-import subprocess
-import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 
-
-# 获取当前时间并格式化为字符串
 now = datetime.datetime.now()
 timestamp = now.strftime("%Y%m%d_%H%M%S")
-# 定义程序和配置文件
-programs = ["./build/splay", "./build/AVL", "./build/baseline"]
 
-config_files = ["./data/data_random_10000.in", "./data/data_same_10000.in", "./data/data_reverse_10000.in"]
+_n = np.linspace(1000, 15000, 29).astype(int)
 
-colors = ['royalblue', 'orangered', 'dodgerblue', 'blueviolet', 'maroon', 'crimson', 'teal', 'olive', 'cyan', 'brown', 'royalblue']
-num_runs = 30  # 运行次数 N
+programs = ['./build/Binary', './build/Fibonacci', './build/Leftist']
 
-# 用于存储结果
-results = {config: {prog: [] for prog in programs} for config in config_files}
+configures = ['custom' + str(n) for n in _n]
 
-# 运行程序并收集数据
-for config in config_files:
-    for prog in programs:
-        gflops_results = []
-        for _ in range(num_runs):
-            command = [prog, config]
-            result = subprocess.run(command, capture_output=True, text=True)
-            output = result.stdout.strip().split('\n')[-1]
-            # gflop_value = re.findall(r"\(\s*([\d.]+)\s*GFlops\)", output)
-            run_time = re.findall(r"[\d.]+", output)[0]
-            if run_time:
-                gflops_results.append(float(run_time[:-1]))
-                print(datetime.datetime.now(), f"{prog} {config} {output} -> {run_time[:-1]}")
-            else:
-                print(datetime.datetime.now(), f"{prog} {config} {output}")
+times = 1
 
-            time.sleep(0.5)
+results = {}
 
-        if gflops_results:
-            results[config][prog] = {
-                'max': np.max(gflops_results),
-                'mean': np.mean(gflops_results),
-                'min': np.min(gflops_results)
-            }
+for program in programs:
+    results[program] = []
+    for configure in configures:
+        command = [program, configure, str(times)]
+        # print(command)
+        result = subprocess.run(command, capture_output=True, text=True)
+        output = result.stdout.strip().split('\n')[-1]
+        runtime = float(re.findall(r"[\d.]+", output)[0])
+        
+        results[program].append(runtime)
 
-# 生成柱状图
-fig, ax = plt.subplots(figsize=(len(programs) * len(config_files) + 3, 10))
-group_width = 0.8
-bar_width = group_width / len(programs)
-index = np.arange(len(config_files))
+        print(datetime.datetime.now(), f"{program} {configure} {output} -> {runtime:.6f}")
+        time.sleep(0.25)
 
-for i, prog in enumerate(programs):
-    max_values = [results[config][prog]['max'] for config in config_files]
-    mean_values = [results[config][prog]['mean'] for config in config_files]
-    min_values = [results[config][prog]['min'] for config in config_files]
-    rects1 = ax.bar(index + i * bar_width, max_values, bar_width, label=prog, color=colors[i])
-    bars = ax.bar(index + i * bar_width, mean_values, bar_width, edgecolor='snow',color=colors[i], hatch='', linewidth=0)
-    bars_min = ax.bar(index + i * bar_width, min_values, bar_width, edgecolor='grey',color=colors[i], hatch='', linewidth=0)
+plt.figure(figsize=(15, 10))
 
-    # 添加数据标签
-    for rect, max_val, mean_val, min_val, bar, mbar in zip(rects1, max_values, mean_values, min_values, bars, bars_min):
-        bx = bar.get_x()
-        bwidth = bar.get_width()
+for program in programs:
+    plt.plot(_n, results[program], label=program, marker='D')
 
-        ax.add_patch(patches.Rectangle((bx, bar.get_height()), bwidth, min_val / 200, color='whitesmoke', fill=None, lw=1, linestyle='dashed'))
-        ax.add_patch(patches.Rectangle((bx, mbar.get_height()), bwidth, min_val / 200, color='dimgrey', fill=None, lw=1, linestyle='dashed'))
-
-        ax.annotate(f'{mean_val:.6f}', xy=(rect.get_x() + rect.get_width() / 2, bar.get_height()),
-                    xytext=(0, 3), textcoords="offset points", ha='center', va='bottom', color='white')
-        ax.annotate(f'{min_val:.6f}', xy=(rect.get_x() + rect.get_width() / 2, mbar.get_height()),
-                    xytext=(0, 3), textcoords="offset points", ha='center', va='bottom', color='silver')
-        ax.annotate(f'{max_val:.6f}', xy=(rect.get_x() + rect.get_width() / 2,  rect.get_height()),
-                    xytext=(0, 3), textcoords="offset points", ha='center', va='bottom')
-
-
-# 设置图表属性
-ax.set_xlabel('Input File')
-ax.set_ylabel('Time / s')
-ax.set_title(f'BST Performance Runs: {num_runs} start: {timestamp} end: {datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}')
-ax.set_xticks(index + group_width / 2 - bar_width / 2)
-ax.set_xticklabels(config_files)
-ax.legend()
-
-# 调整布局并保存图像
-fig.tight_layout()
+plt.legend()
+plt.xlabel('VerticeNum')
+plt.ylabel('Time / s')
+plt.title(f'Dijkstra Optimized by Heaps')
+plt.show()
 plt.savefig(f'./result/autobench_{timestamp}.png', dpi=300)
-
-print(results)

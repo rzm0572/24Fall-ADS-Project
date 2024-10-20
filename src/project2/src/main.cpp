@@ -82,7 +82,6 @@ class Graph {
                     if (!heap.insert(distPair(v, dist[v]))) {  // 如果 v 在队列中，更新其距离，否则入队
                         heap.decreaseKey(distPair(v, dist[v]));
                     }
-                    // heap.insert(distPair(v,dist[v]));
                 }
             }
         }
@@ -90,16 +89,23 @@ class Graph {
     }
 };
 
+// This program takes 2 arguments:
+// argv[1]: the name of the graph file (without extension)
+// argv[2]: the number of epochs (optional, default is 3)
 int main(int argc, char *argv[]) {
+    // Set log file
     std::string logFileName = std::string("log/") + "[" + get_timestamp() + "] " + std::string(tostr(HEAPTYPE)) + "_" + std::string(argv[1]) + ".log";
-    freopen(logFileName.c_str(), "w", stderr);
+    freopen(logFileName.c_str(), "w", stderr);   // Redirect stderr to log file
 
+    // Load graph
     std::string graphFileName = std::string("data/processed/") + std::string(argv[1]) + ".gr";
-    FILE *graphFile = fopen(graphFileName.c_str(), "r");
+    FILE *graphFile = fopen(graphFileName.c_str(), "r");  // Open graph file
 
+    // Read the number of vertices and edges
     int V, E;
     fscanf(graphFile, "%d%d", &V, &E);
 
+    // Read the edges and add them to the graph
     Graph G(V, E);
     for (int i = 0; i < E; i++) {
         int u, v, w;
@@ -109,15 +115,19 @@ int main(int argc, char *argv[]) {
     fclose(graphFile);
     logger(stderr, "Graph loaded.\n");
 
-        int numEpochs = argc > 2 ? std::stoi(argv[2]) : 3;
+    // Read queries and run Dijkstra's algorithm
+    int numEpochs = argc > 2 ? std::stoi(argv[2]) : 3;
     double totalTime = 0.0;
     for (int epoch = 0; epoch < numEpochs; epoch++) {
+        // Load query set
         std::string queryFileName = std::string("data/queries/") + std::string(argv[1]) + "_" + std::to_string(epoch) + ".qry";
-        FILE *queryFile = fopen(queryFileName.c_str(), "r");
+        FILE *queryFile = fopen(queryFileName.c_str(), "r");  // Open query file
 
+        // Read the number of queries
         int Q;
         fscanf(queryFile, "%d", &Q);
 
+        // Load the queries
         int *src = new int[Q];
         int *dst = new int[Q];
         dist_t *result = new dist_t[Q];
@@ -128,12 +138,13 @@ int main(int argc, char *argv[]) {
         fclose(queryFile);
         logger(stderr, "Query set %d loaded.\n", epoch);
 
-        START_TIMER;
-        for (int i = 0; i < Q; i++) {
+        START_TIMER;                   // Start of the time zone
+        for (int i = 0; i < Q; i++) {  // Run Dijkstra's algorithm for each query
             result[i] = G.dijkstra(src[i], dst[i]);
         }
-        STOP_TIMER(totalTime);
+        STOP_TIMER(totalTime);         // End of the time zone
 
+        // Save the results
         std::string resultFileName = std::string("data/results/") + std::string(tostr(HEAPTYPE)) + "_" + std::string(argv[1]) + "_" + std::to_string(epoch) + ".res";
         FILE *resultFile = fopen(resultFileName.c_str(), "w");
         for (int i = 0; i < Q; i++) {

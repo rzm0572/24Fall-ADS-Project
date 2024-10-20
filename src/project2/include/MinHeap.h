@@ -23,6 +23,7 @@
         printf("%.6fs " msg, t, ##__VA_ARGS__);                                                         \
     }
 
+// Logging marcos
 #define logger(file, msg, ...)             \
     {                                      \
         printf(msg, ##__VA_ARGS__);        \
@@ -30,9 +31,11 @@
         fflush(file);                      \
     }
 
+// Transform x to string
 #define real_tostr(x) #x
 #define tostr(x) real_tostr(x)
 
+// Concatenate two marco
 #define real_cat(a, b) a##b
 #define cat(a, b) real_cat(a, b)
 
@@ -44,7 +47,7 @@ struct Pair {
 
     Pair() : key(-1) {};
     Pair(int _key, T _value) : key(_key), value(_value) {};
-    bool operator<(const Pair<T>& other) const {
+    bool operator<(const Pair<T>& other) const {  // operator < for Pair
         return value < other.value;
     }
 };
@@ -56,6 +59,7 @@ class MinHeap {
     int size;
 
    public:
+    MinHeap(int _size = 0) : size(_size) {}
     // TODO: Need to implement
     virtual Pair<T> findMin() = 0;
     virtual bool insert(Pair<T> x) = 0;
@@ -67,7 +71,7 @@ class MinHeap {
     // virtual bool merge(MinHeap b);
 
     // Helper function
-    virtual int getSize() = 0;
+    int getSize() { return size; }
     virtual bool checkExist(int key) = 0;
 };
 
@@ -75,24 +79,31 @@ class MinHeap {
 // TODO: You can add declarations of any helper functions or variables in these classes as your wish.
 // For example, decreaseKey needs a array of pointers to nodes, which can be declaired as a private member variable.
 
+// BinomialHeap implementation
 template <class T>
 class BinomialHeap : public MinHeap<T> {
+   private:
+    // TODO: You can add any helper functions or variables as your wish ^v^
+    struct TreeNode {
+        // TODO: This the node structure of BinomialHeap
+    };
+
    public:
     BinomialHeap(int n);
+    ~BinomialHeap();
     Pair<T> findMin();
     bool insert(Pair<T> x);
     bool deleteMin();
     bool decreaseKey(Pair<T> x);
-    int getSize();
     bool checkExist(int key);
 };
 
+// FibonacciHeap implementation
 template <class T>
 class FibonacciHeap : public MinHeap<T> {
-   protected:
-    int size;
-    int rootLen;
-    struct TreeNode {
+   private:
+    int rootLen;       // Length of root list
+    struct TreeNode {  // Node structure
         Pair<T> data;
         int deg;
         bool marked;
@@ -103,34 +114,33 @@ class FibonacciHeap : public MinHeap<T> {
         TreeNode(Pair<T> _data = Pair<T>(), int _deg = 0, bool _marked = false, TreeNode* _parent = nullptr, TreeNode* child = nullptr, TreeNode* _left = nullptr, TreeNode* _right = nullptr) : data(_data), deg(_deg), marked(_marked), parent(_parent), left(_left), right(_right) {}
     };
 
-    TreeNode* minNode;
+    TreeNode* minNode;  // Pointer to minimum node
     TreeNode** Position;
 
     // Helper function
-    void insertRootList(TreeNode* newNode);
-    bool deleteRootList(TreeNode* deleteNodePtr);
-    TreeNode* heapLink(TreeNode* x, TreeNode* y);
-    void consolidate();
-    void cut(TreeNode* x);
+    void insertRootList(TreeNode* newNode);        // Insert a new node to root list
+    bool deleteRootList(TreeNode* deleteNodePtr);  // Delete a node from root list
+    TreeNode* heapLink(TreeNode* x, TreeNode* y);  // Let one of x and y be a child of the other
+    void consolidate();                            // merge trees of equal degree in the root list
+    void cut(TreeNode* x);                         // cut x from its parent and add it to root list
     void cascadingCut(TreeNode* x);
 
    public:
-    FibonacciHeap(int n);
-    ~FibonacciHeap();
-    Pair<T> findMin();
-    bool insert(Pair<T> x);
-    bool deleteMin();
-    bool decreaseKey(Pair<T> x);
-    int getSize();
-    bool checkExist(int key);
+    FibonacciHeap(int n);         // Constructor
+    ~FibonacciHeap();             // Destructor
+    Pair<T> findMin();            // Find the minimum node in the heap
+    bool insert(Pair<T> x);       // Insert a new node into the heap
+    bool deleteMin();             // Delete the minimum node from the heap
+    bool decreaseKey(Pair<T> x);  // Decrease the key of a node in the heap
+    bool checkExist(int key);     // Check if a node with a given key exists in the heap
 
-    void printHeap(int n);
+    void printHeap(int n);  // Debugging function to print the heap
 };
 
+// BinaryHeap implementation
 template <class T>
 class BinaryHeap : public MinHeap<T> {
-   protected:
-    int size;
+   private:
     Pair<T>* Heap;
     int* Position;
 
@@ -141,14 +151,13 @@ class BinaryHeap : public MinHeap<T> {
     bool insert(Pair<T> x);
     bool deleteMin();
     bool decreaseKey(Pair<T> x);
-    int getSize();
     bool checkExist(int key);
 };
 
+// LeftistHeap implementation
 template <class T>
 class LeftistHeap : public MinHeap<T> {
-   protected:
-    int size;          // 堆的大小
+   private:
     struct TreeNode {  // 节点结构
         Pair<T> value;
         TreeNode* left;
@@ -167,7 +176,6 @@ class LeftistHeap : public MinHeap<T> {
     bool insert(Pair<T> x);                       // 插入元素
     bool deleteMin();                             // 删除最小值
     bool decreaseKey(Pair<T> x);                  // 减小值
-    int getSize();                                // 获取大小
     TreeNode* NewNode(Pair<T> x);                 // 创建新节点
     bool checkExist(int key);                     // 检查是否存在
 };
@@ -176,6 +184,6 @@ typedef int dist_t;             // Type of distance
 typedef Pair<dist_t> distPair;  // Type of ID-distance pair
 
 template <typename T>
-using PriorityQueue = cat(HEAPTYPE, Heap)<T>;
+using PriorityQueue = cat(HEAPTYPE, Heap)<T>;  // Let PriorityQueue be a synonym of the chosen heap type
 
 #endif

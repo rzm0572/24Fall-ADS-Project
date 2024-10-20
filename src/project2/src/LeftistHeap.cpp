@@ -11,8 +11,7 @@ n: 堆的大小
 */
 
 template <class T>
-LeftistHeap<T>::LeftistHeap(int n) {
-    size = 0;
+LeftistHeap<T>::LeftistHeap(int n) : MinHeap<T>(0) {
     root = nullptr;
     Position = new TreeNode*[n + 1];
     for (int i = 0; i <= n; i++) {
@@ -86,7 +85,7 @@ bool LeftistHeap<T>::insert(Pair<T> x) {
     }
     TreeNode* temp = NewNode(x);  // 新建一个结点
     Position[x.key] = temp;
-    size++;
+    MinHeap<T>::size++;
     root = Merge(root, temp);  // 将节点作为一个左式堆合并
     return true;
 }
@@ -100,11 +99,11 @@ bool LeftistHeap<T>::insert(Pair<T> x) {
 template <class T>
 bool LeftistHeap<T>::deleteMin() {
     // TODO
-    if (size == 0) {  // 如果堆为空，则返回 false
+    if (MinHeap<T>::size == 0) {  // 如果堆为空，则返回 false
         return false;
     }
     Position[root->value.key] = nullptr;    // 将根节点的位置置空
-    size--;                                 // 减少堆的大小
+    MinHeap<T>::size--;                     // 减少堆的大小
     root = Merge(root->left, root->right);  // 合并根节点的左右子树，更新根节点的指针
     return true;
 }
@@ -135,14 +134,6 @@ bool LeftistHeap<T>::decreaseKey(Pair<T> x) {
     return true;
 }
 
-/*
-获得堆的大小
-*/
-
-template <class T>
-int LeftistHeap<T>::getSize() {
-    return size;
-}
 /*
 创建一个新的结点
 参数：

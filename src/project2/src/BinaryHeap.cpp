@@ -15,8 +15,8 @@ n：数据的总数
 */
 
 template <class T>
-BinaryHeap<T>::BinaryHeap(int n) {
-    size = 0;
+BinaryHeap<T>::BinaryHeap(int n) : MinHeap<T>(0) {
+    // size = 0;
     Heap = new Pair<T>[n + 1];  // 分配空间用于储存堆
     Position = new int[n + 1];  // 分配空间用于储存每个节点都在堆中的位置
     for (int i = 0; i <= n; i++) {
@@ -33,7 +33,7 @@ BinaryHeap<T>::~BinaryHeap() {
 
 template <class T>
 Pair<T> BinaryHeap<T>::findMin() {
-    return (size > 0) ? Heap[1]: Pair<T>();
+    return (MinHeap<T>::size > 0) ? Heap[1] : Pair<T>();
 }
 /*
 插入一个新的元素 x 到二叉堆中，并保持其为最小堆。
@@ -47,10 +47,10 @@ bool BinaryHeap<T>::insert(Pair<T> x) {
     if (checkExist(x.key)) {  // 节点已存在，则不插入，返回 false
         return false;
     }
-    size++;                                         // 节点不存在，则插入，堆大小加 1
-    Heap[size] = x;                                 // 插入新节点在堆的最后位置
-    Position[x.key] = size;                         // 记录节点在堆中的位置，最初为堆的末尾
-    int pos = size;                                 // 当前节点的位置
+    MinHeap<T>::size++;                             // 节点不存在，则插入，堆大小加 1
+    Heap[MinHeap<T>::size] = x;                     // 插入新节点在堆的最后位置
+    Position[x.key] = MinHeap<T>::size;             // 记录节点在堆中的位置，最初为堆的末尾
+    int pos = MinHeap<T>::size;                     // 当前节点的位置
     while (pos > 1 && Heap[pos] < Heap[pos / 2]) {  // 向上调整，直到父节点小于自己
         Position[Heap[pos].key] = pos / 2;          // 更新节点在堆中的位置
         Position[Heap[pos / 2].key] = pos;
@@ -68,16 +68,16 @@ bool BinaryHeap<T>::insert(Pair<T> x) {
 */
 template <class T>
 bool BinaryHeap<T>::deleteMin() {
-    if (size == 0) {  // 二叉堆为空，则不删除，返回 false
+    if (MinHeap<T>::size == 0) {  // 二叉堆为空，则不删除，返回 false
         return false;
     }
-    Position[Heap[1].key] = -1;  // 该节点在堆中的位置不存在
-    Heap[1] = Heap[size];        // 将最后一个节点放到根节点位置
-    size--;
+    Position[Heap[1].key] = -1;        // 该节点在堆中的位置不存在
+    Heap[1] = Heap[MinHeap<T>::size];  // 将最后一个节点放到根节点位置
+    MinHeap<T>::size--;
     int pos = 1;
-    while (2 * pos <= size) {  // 向下调整，直到子节点小于父节点
+    while (2 * pos <= MinHeap<T>::size) {  // 向下调整，直到子节点小于父节点
         int j = 2 * pos, i = j + 1;
-        if (i <= size && Heap[i] < Heap[j]) {  // 选择较小的子节点
+        if (i <= MinHeap<T>::size && Heap[i] < Heap[j]) {  // 选择较小的子节点
             j = i;
         }
         if (Heap[j] < Heap[pos]) {        // 父节点大于子节点，则交换位置
@@ -118,14 +118,7 @@ bool BinaryHeap<T>::decreaseKey(Pair<T> x) {
     }
     return true;
 }
-/*
-获取二叉堆的大小。
-返回值：二叉堆的大小。
-*/
-template <class T>
-int BinaryHeap<T>::getSize() {
-    return size;
-}
+
 /*
 检查节点是否存在。
 参数：
