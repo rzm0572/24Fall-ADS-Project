@@ -12,17 +12,21 @@ project2
 │   └── results
 ├── include
 │   └── MinHeap.h
+├── log
 ├── README.md
+├── result
 ├── run.sh
 ├── src
 │   ├── BinaryHeap.cpp
 │   ├── BinomialHeap.cpp
+│   ├── difftest.cpp
 │   ├── FibonacciHeap.cpp
 │   ├── LeftistHeap.cpp
 │   └── main.cpp
 └── utils
     ├── autobench.py
     └── dataGen.py
+    └── dataGenCustom.py
 ```
 
 ## Preparation
@@ -31,7 +35,11 @@ project2
 
 2. Download the dataset from [Benchmarks for 9th DIMACS Implementation Challenge - Shortest Paths](http://www.dis.uniroma1.it/challenge9/download.shtml) and put them in `data/raw` directory.
 
-3. Run `python3 utils/dataGen.py` to preprocess the data and generate the queries.
+## Data Generation
+
+1. For datasets downloaded from above, Run `python3 utils/dataGen.py` to preprocess the data and generate the queries.
+
+2. For custom datasets, Run `python3 utils/dataGenCustom.py` to generate random graphs and queries (**Warning:** You may need to install python packages `numpy` and `cyaron` to run this script)
 
 ## Build and Run
 
@@ -75,3 +83,16 @@ cd ..
 ```
 
 The output will be saved in `data/results/<HEAPTYPE>_<DATASET>_<EPOCH>.res`.
+
+## Performance Test
+
+1. Modify `autobench.py` to set the heap types and datasets you want to test.
+
+2. Run `python3 autobench.py` to test and plot the performance results, which will be saved in `result` directory.
+
+For example, to test the performance of `Binary`, `Fibonacci`, and `Leftist` heaps on the `BAY` and `NY` datasets, you can modify `autobench.py` as follows:
+
+```python
+programs = ['./build/Binary', './build/Fibonacci', './build/Leftist']
+datasets = ['BAY', 'NY']
+```

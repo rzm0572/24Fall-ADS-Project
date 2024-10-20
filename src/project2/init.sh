@@ -2,6 +2,8 @@
 
 cmake -B build
 mkdir -p data
+mkdir -p result
+mkdir -p log
 
 cd data
 mkdir -p processed
