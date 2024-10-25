@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cmake -B build
 mkdir -p data
 mkdir -p result
 mkdir -p log
@@ -12,4 +11,4 @@ mkdir -p raw
 mkdir -p results
 cd ..
 
-mkdir -p log
+cmake -B build

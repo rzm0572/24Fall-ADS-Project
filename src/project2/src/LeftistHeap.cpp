@@ -68,7 +68,7 @@ typename LeftistHeap<T>::TreeNode* LeftistHeap<T>::Merge(TreeNode* T1, TreeNode*
 
 template <class T>
 Pair<T> LeftistHeap<T>::findMin() {
-    // TODO
+    // printf("%d\n", root->value.key);
     return root->value;  // 返回根节点的值
 }
 /*
@@ -98,13 +98,16 @@ bool LeftistHeap<T>::insert(Pair<T> x) {
 
 template <class T>
 bool LeftistHeap<T>::deleteMin() {
-    // TODO
     if (MinHeap<T>::size == 0) {  // 如果堆为空，则返回 false
         return false;
     }
     Position[root->value.key] = nullptr;    // 将根节点的位置置空
     MinHeap<T>::size--;                     // 减少堆的大小
     root = Merge(root->left, root->right);  // 合并根节点的左右子树，更新根节点的指针
+
+    if (root != nullptr) {
+        root->parent = nullptr;             // 根节点的父指针置空
+    }
     return true;
 }
 /*

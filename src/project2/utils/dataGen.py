@@ -32,7 +32,7 @@ def graphProcessor(src, dst, we=False):
     
     return num_vertice, num_edge
 
-# 对于每个地区的原始数据，生成一份处理过的图结构描述文件和三份对应的查询列表文件
+# For raw data of each region, generate a processed graph file and three corresponding query list files
 if __name__ == "__main__":
     raw = os.listdir("./data/raw")
     for filename in raw:

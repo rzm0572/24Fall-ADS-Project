@@ -96,3 +96,29 @@ For example, to test the performance of `Binary`, `Fibonacci`, and `Leftist` hea
 programs = ['./build/Binary', './build/Fibonacci', './build/Leftist']
 datasets = ['BAY', 'NY']
 ```
+
+## Accuracy Test
+
+To test the accuracy of these heaps, you can use the `src/difftest.cpp` file.
+
+1. Modify the `src/difftest.cpp` file to set the heap type:
+
+    ```cpp
+    // src/difftest.cpp, line 11
+    // Take BinaryHeap as an example
+    #define heaptype1 Binary
+    #define heaptype2 Test
+    ``
+
+2. Build the `difftest` program:
+
+    ```bash
+    make difftest -C build
+    ```
+
+3. Run the `difftest` program:
+
+    ```bash
+    ./build/difftest
+    ```
+    And you will see the output of the program in the console.

@@ -2,7 +2,7 @@
 #define _MIN_HEAP_H
 
 #ifndef HEAPTYPE
-#define HEAPTYPE Binomial
+#define HEAPTYPE Binary
 #endif
 
 // Timing marcos
@@ -75,28 +75,7 @@ class MinHeap {
     virtual bool checkExist(int key) = 0;
 };
 
-// Four implementations of MinHeap
-// TODO: You can add declarations of any helper functions or variables in these classes as your wish.
-// For example, decreaseKey needs a array of pointers to nodes, which can be declaired as a private member variable.
-
-// BinomialHeap implementation
-template <class T>
-class BinomialHeap : public MinHeap<T> {
-   private:
-    // TODO: You can add any helper functions or variables as your wish ^v^
-    struct TreeNode {
-        // TODO: This the node structure of BinomialHeap
-    };
-
-   public:
-    BinomialHeap(int n);
-    ~BinomialHeap();
-    Pair<T> findMin();
-    bool insert(Pair<T> x);
-    bool deleteMin();
-    bool decreaseKey(Pair<T> x);
-    bool checkExist(int key);
-};
+// Three implementations of MinHeap
 
 // FibonacciHeap implementation
 template <class T>
