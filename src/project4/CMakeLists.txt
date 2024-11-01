@@ -7,3 +7,4 @@ add_compile_options(-g -O0 -Wall)
 include_directories(include)
 
 add_executable(Onm "src/Onm.cpp")
+add_executable(BItree "src/BItree.cpp")
