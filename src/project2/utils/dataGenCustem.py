@@ -4,7 +4,8 @@ import dataGen as dg
 import os
 
 _n = cy.ati(np.linspace(1000, 15000, 29))
-_m = cy.ati(np.floor(1.2 * np.pow(_n, 1.4)))
+# _m = cy.ati(np.floor(1.2 * np.pow(_n, 1.4)))
+_m = cy.ati(np.floor(0.5 * np.pow(_n, 1.8)))
 
 def dataGen(n, m):
     test_data = cy.IO(file_prefix=f"./data/processed/custom", data_id = n, input_suffix=".gr", disable_output=True)
